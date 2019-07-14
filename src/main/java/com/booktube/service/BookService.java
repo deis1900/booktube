@@ -1,11 +1,10 @@
 package com.booktube.service;
 
 import com.booktube.model.Book;
-import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
-@Service
 public interface BookService {
 
     Book finById(Long id);
@@ -18,5 +17,5 @@ public interface BookService {
 
     Boolean deleteBook(Book book);
 
-    Set<Book> getSpecifiedBooks(String author, String nameBook, String year);
+    List<Book> getSpecifiedBooks(String author, String nameBook, String year);
 }

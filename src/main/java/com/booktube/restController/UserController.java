@@ -22,5 +22,7 @@ public class UserController {
         return new ResponseEntity<User>(userService.saveAndFlush(user), HttpStatus.OK);
     }
 
+    //The login already exists
+
 }
 
