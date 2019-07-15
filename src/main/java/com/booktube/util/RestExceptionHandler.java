@@ -1,5 +1,6 @@
 package com.booktube.util;
 
+import com.booktube.util.exceptionHandler.LoginExists;
 import com.booktube.util.exceptionHandler.LoginUserNotFoundException;
 import com.booktube.util.exceptionHandler.UserIdMismatchException;
 import com.booktube.util.exceptionHandler.UsernameNotFoundException;
@@ -35,5 +36,11 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleUsernameNotFound(Exception ex, WebRequest request) {
         return handleExceptionInternal(ex, "The username not exist.",
                 new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler({LoginExists.class})
+    protected ResponseEntity<Object> handleLoginExists(Exception ex, WebRequest request) {
+        return handleExceptionInternal(ex, "The login is already exists.",
+                new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 }

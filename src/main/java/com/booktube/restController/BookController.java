@@ -28,7 +28,7 @@ public class BookController {
 
     @GetMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<Book>> getListBooks(){
-        return new ResponseEntity<Set<Book>>(bookService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(bookService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{author}/{nameBook}/{year}/")
@@ -36,7 +36,7 @@ public class BookController {
             @PathVariable("author") String author,
             @PathVariable("nameBook") String nameBook,
             @PathVariable("year") String year) {
-        return new ResponseEntity<List<Book>> (bookService.getSpecifiedBooks(author, nameBook, year), HttpStatus.OK);
+        return new ResponseEntity<> (bookService.getSpecifiedBooks(author, nameBook, year), HttpStatus.OK);
     }
 
     @PostMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -47,7 +47,7 @@ public class BookController {
     @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Book> update(@PathVariable("id") Long id,  Book book) {
         if (bookService.isPresent(id)) {
-            return new ResponseEntity<Book>(bookService.saveAndUpdate(book), HttpStatus.OK);
+            return new ResponseEntity<>(bookService.saveAndUpdate(book), HttpStatus.OK);
         }
         else throw new UserIdMismatchException();
     }
