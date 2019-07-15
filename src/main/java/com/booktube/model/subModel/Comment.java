@@ -12,10 +12,10 @@ public class Comment {
     private Long id;
 
     @Column
-    String comment;
+    private String comment;
 
     @Column
-    User from;
+    private User from;
 
     @Temporal(TemporalType.TIMESTAMP)
     private java.util.Date creationDate;

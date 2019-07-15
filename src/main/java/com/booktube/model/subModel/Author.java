@@ -11,13 +11,13 @@ public class Author {
     private Long id;
 
     @Column(name = "NAME_AUTHOR")
-    String  nameAuthor;
+    private String  nameAuthor;
 
     @Column(name = "SURNAME_AUTHOR")
-    String surnameAuthor;
+    private String surnameAuthor;
 
     @Column(name = "YEARS_OF_LIFE")
-    String yearsOfLife;
+    private String yearsOfLife;
 
     public Author() {
     }

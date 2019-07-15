@@ -13,14 +13,14 @@ public class Genre {
     private Long id;
 
     @Column
-    String genre;
+    private String genre;
 
 
     @ManyToMany
     private Book book;
 
     @ElementCollection
-    Subsection subsection;
+    private Subsection subsection;
 
     public Genre() {
     }

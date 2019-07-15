@@ -14,7 +14,7 @@ public class Address {
     private String zip;
 
     @Column
-    String phone;
+    private String phone;
 
     public Address() {
     }

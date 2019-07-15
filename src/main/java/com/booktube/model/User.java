@@ -39,11 +39,11 @@ public class User {
 
     @JsonIgnore
     @Column
-    String email;
+    private String email;
 
     @JsonIgnore
     @Column
-    String password;
+    private String password;
 
     @Lob
     private Interest interests;

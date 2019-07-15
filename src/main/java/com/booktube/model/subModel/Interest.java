@@ -12,7 +12,7 @@ public class Interest {
     private Long id;
 
     @ManyToMany
-    User user;
+    private User user;
 
     /* to be continue */
 
