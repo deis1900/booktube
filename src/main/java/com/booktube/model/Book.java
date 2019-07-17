@@ -1,6 +1,7 @@
 package com.booktube.model;
 
 import com.booktube.model.subModel.Author;
+import com.booktube.model.subModel.BookPictures;
 import com.booktube.model.subModel.Comment;
 import com.booktube.model.subModel.Genre;
 
@@ -14,6 +15,7 @@ public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, unique = true)
     private Long productId;
 
     @Column
@@ -28,7 +30,8 @@ public class Book {
     @Column(name = "LANGUAGE")
     private String language;
 
-    @ManyToMany
+    @ElementCollection
+    @CollectionTable(name = "GENRE", joinColumns = @JoinColumn(name = "ID"))
     private Set<Genre> genres;
 
     @Lob
@@ -41,14 +44,16 @@ public class Book {
     @Column
     private String lenght;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments;
 
 //    @OneToMany
 //    private List<Video> videos
 
-    @Column
-    private List<String> pictures;
+    @ElementCollection
+    @CollectionTable(name="PICTURES", joinColumns = @JoinColumn(name="ID"))
+    @Column(name="PICTURES")
+    private List<BookPictures> pictures;
 
     @Column
     private Integer scores;
@@ -136,14 +141,6 @@ public class Book {
         this.comments = comments;
     }
 
-    public List<String> getPictures() {
-        return pictures;
-    }
-
-    public void setPictures(List<String> pictures) {
-        this.pictures = pictures;
-    }
-
     public Integer getScores() {
         return scores;
     }
@@ -165,7 +162,6 @@ public class Book {
                 ", revue='" + revue + '\'' +
                 ", lenght='" + lenght + '\'' +
                 ", comments=" + comments +
-                ", pictures=" + pictures +
                 ", scores=" + scores +
                 '}';
     }

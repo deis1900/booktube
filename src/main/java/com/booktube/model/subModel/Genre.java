@@ -4,12 +4,12 @@ import com.booktube.model.Book;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "JENRE")
+@Embeddable
 public class Genre {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
     @Column

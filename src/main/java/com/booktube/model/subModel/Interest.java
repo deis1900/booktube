@@ -4,11 +4,12 @@ import com.booktube.model.User;
 
 import javax.persistence.*;
 
-@Entity
+@Embeddable
 public class Interest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
     @ManyToMany

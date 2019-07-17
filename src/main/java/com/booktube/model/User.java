@@ -6,6 +6,7 @@ import com.booktube.model.subModel.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -14,6 +15,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
     @Column
@@ -46,9 +48,22 @@ public class User {
     private String password;
 
     @Lob
+    @Embedded
     private Interest interests;
 
     public User() {
+    }
+
+    public User(String login, String name, String surname,
+                String email, String password, Interest interests, Role[] roles, Address... addresses) {
+        this.login = login;
+        this.name = name;
+        this.surname = surname;
+        this.roles.addAll(Arrays.asList(roles));
+        this.addresses.addAll(Arrays.asList(addresses));
+        this.email = email;
+        this.password = password;
+        this.interests = interests;
     }
 
     public Long getId() {

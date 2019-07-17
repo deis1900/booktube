@@ -9,12 +9,15 @@ import java.util.Date;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
     @Column
     private String comment;
 
-    @Column
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "USER_ID")
     private User from;
 
     @Temporal(TemporalType.TIMESTAMP)

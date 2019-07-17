@@ -1,20 +1,24 @@
 package com.booktube.model.subModel;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 
 @Embeddable
 public class Address {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, unique = true)
+    private String phone;
+
+    @Column
     private String city;
 
+    @Column
     private String street;
 
     @Column(name="ZIP_CODE")
     private String zip;
 
-    @Column
-    private String phone;
 
     public Address() {
     }
