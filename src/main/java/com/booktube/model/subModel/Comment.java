@@ -4,21 +4,21 @@ import com.booktube.model.User;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
+@Table(name = "COMMENTS")
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = "ID", nullable = false, unique = true)
     private Long id;
 
-    @Column
+    @Column(name = "COMMENT")
     private String comment;
 
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "USER_ID")
-    private User from;
+    @ManyToOne
+    private User user;
 
     @Temporal(TemporalType.TIMESTAMP)
     private java.util.Date creationDate;
@@ -42,12 +42,12 @@ public class Comment {
         this.comment = comment;
     }
 
-    public User getFrom() {
-        return from;
+    public User getUser() {
+        return user;
     }
 
-    public void setFrom(User from) {
-        this.from = from;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Date getCreationDate() {
@@ -59,11 +59,27 @@ public class Comment {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Comment comment1 = (Comment) o;
+        return Objects.equals(id, comment1.id) &&
+                Objects.equals(comment, comment1.comment) &&
+                Objects.equals(user, comment1.user) &&
+                Objects.equals(creationDate, comment1.creationDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, comment, user, creationDate);
+    }
+
+    @Override
     public String toString() {
         return "Comment{" +
                 "id=" + id +
                 ", comment='" + comment + '\'' +
-                ", from=" + from +
+                ", from=" + user +
                 ", creationDate=" + creationDate +
                 '}';
     }
