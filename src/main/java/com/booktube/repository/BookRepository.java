@@ -22,5 +22,5 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Override
     void delete(Book book);
 
-    List<Book> findBookByAuthorAndNameAndYear(String author, String nameBook, String year);
+    List<Book> findBookByAuthorsAndNameAndYear(String author, String nameBook, String year);
 }

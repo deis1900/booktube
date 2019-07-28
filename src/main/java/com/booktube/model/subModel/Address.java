@@ -1,19 +1,18 @@
 package com.booktube.model.subModel;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Embeddable
 public class Address {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = "PHONE", nullable = false, unique = true)
     private String phone;
 
-    @Column
+    @Column(name = "CITY")
     private String city;
 
-    @Column
+    @Column(name = "STREET")
     private String street;
 
     @Column(name="ZIP_CODE")
@@ -53,6 +52,22 @@ public class Address {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Address address = (Address) o;
+        return Objects.equals(phone, address.phone) &&
+                Objects.equals(city, address.city) &&
+                Objects.equals(street, address.street) &&
+                Objects.equals(zip, address.zip);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(phone, city, street, zip);
     }
 
     @Override

@@ -45,6 +45,6 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getSpecifiedBooks(String author, String nameBook, String year) {
-        return bookRepository.findBookByAuthorAndNameAndYear(author, nameBook, year);
+        return bookRepository.findBookByAuthorsAndNameAndYear(author, nameBook, year);
     }
 }

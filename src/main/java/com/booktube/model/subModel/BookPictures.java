@@ -1,26 +1,15 @@
 package com.booktube.model.subModel;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Embeddable
 public class BookPictures {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
-
-    @Column
+    @Column(name = "PHOTO")
     String photo;
 
     public BookPictures() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getPhoto() {
@@ -32,10 +21,22 @@ public class BookPictures {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BookPictures that = (BookPictures) o;
+        return Objects.equals(photo, that.photo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(photo);
+    }
+
+    @Override
     public String toString() {
         return "BookPictures{" +
-                "id=" + id +
-                ", photo='" + photo + '\'' +
+                "photo='" + photo + '\'' +
                 '}';
     }
 }

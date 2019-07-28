@@ -1,59 +1,57 @@
 package com.booktube.model;
 
-import com.booktube.model.subModel.Author;
-import com.booktube.model.subModel.BookPictures;
-import com.booktube.model.subModel.Comment;
-import com.booktube.model.subModel.Genre;
+import com.booktube.model.subModel.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table
-public class Book {
+@Table(name = "BOOKS")
+public class Book implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = "BOOK_ID", nullable = false, unique = true)
     private Long productId;
 
-    @Column
+    @Column(name = "NAME")
     private String name;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Author> authors;
 
-    @Column
+    @Column(name = "YEAR")
     private String year;
 
     @Column(name = "LANGUAGE")
     private String language;
 
-    @ElementCollection
-    @CollectionTable(name = "GENRE", joinColumns = @JoinColumn(name = "ID"))
+    @OneToMany
     private Set<Genre> genres;
 
     @Lob
-    @Column
+    @Column(name = "DESCRIPTION")
     private String description;
 
-    @Column
+    @Column(name = "REVUE")
     private String revue;
 
-    @Column
-    private String lenght;
+    @Column(name = "LENGTH")
+    private String length;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Comment> comments;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Comment> comments;
 
-//    @OneToMany
-//    private List<Video> videos
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Video> videos;
 
     @ElementCollection
-    @CollectionTable(name="PICTURES", joinColumns = @JoinColumn(name="ID"))
-    @Column(name="PICTURES")
-    private List<BookPictures> pictures;
+    @CollectionTable(name = "PICTURES", joinColumns = @JoinColumn(name = "ID"))
+    @Column(name = "PICTURES")
+    private Set<BookPictures> pictures;
 
     @Column
     private Integer scores;
@@ -125,20 +123,28 @@ public class Book {
         this.revue = revue;
     }
 
-    public String getLenght() {
-        return lenght;
+    public String getLength() {
+        return length;
     }
 
-    public void setLenght(String lenght) {
-        this.lenght = lenght;
+    public void setLength(String length) {
+        this.length = length;
     }
 
-    public List<Comment> getComments() {
+    public Set<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(List<Comment> comments) {
+    public void setComments(Set<Comment> comments) {
         this.comments = comments;
+    }
+
+    public List<Video> getVideos() {
+        return videos;
+    }
+
+    public void setVideos(List<Video> videos) {
+        this.videos = videos;
     }
 
     public Integer getScores() {
@@ -147,6 +153,39 @@ public class Book {
 
     public void setScores(Integer scores) {
         this.scores = scores;
+    }
+
+    public Set<BookPictures> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(Set<BookPictures> pictures) {
+        this.pictures = pictures;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return Objects.equals(productId, book.productId) &&
+                Objects.equals(name, book.name) &&
+                Objects.equals(authors, book.authors) &&
+                Objects.equals(year, book.year) &&
+                Objects.equals(language, book.language) &&
+                Objects.equals(genres, book.genres) &&
+                Objects.equals(description, book.description) &&
+                Objects.equals(revue, book.revue) &&
+                Objects.equals(length, book.length) &&
+                Objects.equals(comments, book.comments) &&
+                Objects.equals(videos, book.videos) &&
+                Objects.equals(pictures, book.pictures) &&
+                Objects.equals(scores, book.scores);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productId, name, authors, year, language, genres, description, revue, length, comments, videos, pictures, scores);
     }
 
     @Override
@@ -160,8 +199,10 @@ public class Book {
                 ", genres=" + genres +
                 ", description='" + description + '\'' +
                 ", revue='" + revue + '\'' +
-                ", lenght='" + lenght + '\'' +
+                ", length='" + length + '\'' +
                 ", comments=" + comments +
+                ", videos=" + videos +
+                ", pictures=" + pictures +
                 ", scores=" + scores +
                 '}';
     }

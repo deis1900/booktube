@@ -1,10 +1,15 @@
 package com.booktube.model.subModel;
 
-import javax.persistence.Entity;
+import org.springframework.security.core.GrantedAuthority;
 
-@Entity
-public enum Role
-//        implements GrantedAuthority
-{
-    USER, ADMIN, MANAGER
+public enum Role implements GrantedAuthority {
+    USER, ADMIN, MANAGER;
+
+    Role() {
+    }
+
+    @Override
+    public String getAuthority() {
+        return name();
+    }
 }

@@ -1,5 +1,6 @@
 package com.booktube.model.subModel;
 
+import com.booktube.model.Book;
 import com.booktube.model.User;
 
 import javax.persistence.*;
@@ -19,6 +20,9 @@ public class Comment {
 
     @ManyToOne
     private User user;
+
+    @ManyToOne
+    private Book book;
 
     @Temporal(TemporalType.TIMESTAMP)
     private java.util.Date creationDate;
@@ -79,7 +83,7 @@ public class Comment {
         return "Comment{" +
                 "id=" + id +
                 ", comment='" + comment + '\'' +
-                ", from=" + user +
+                ", user=" + user +
                 ", creationDate=" + creationDate +
                 '}';
     }

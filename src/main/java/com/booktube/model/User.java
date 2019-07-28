@@ -1,69 +1,70 @@
 package com.booktube.model;
 
 import com.booktube.model.subModel.Address;
+import com.booktube.model.subModel.Comment;
 import com.booktube.model.subModel.Interest;
 import com.booktube.model.subModel.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
-import java.util.Arrays;
+import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
-@Table
-public class User {
+@Table(name = "USERS")
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = "ID", nullable = false, unique = true)
     private Long id;
 
-    @Column
+    @Column(name = "LOGIN")
     private String login;
 
-    @Column
+    @Column(name = "NAME")
     private String name;
 
-    @Column
+    @Column(name = "SURNAME")
     private String surname;
 
-    @ElementCollection
-    @CollectionTable(
-            name="USER_ROLE",
-            joinColumns=@JoinColumn(name="OWNER_ID"))
-    private List<Role> roles;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ROLE")
+    private Role role;
 
-    @ElementCollection
-    @CollectionTable(
-            name = "USER_ADDRESS",
-    joinColumns = @JoinColumn(name = "OWNER_ID"))
-    private List<Address> addresses;
+    @Embedded
+    private Address address;
 
     @JsonIgnore
-    @Column
+    @Column(name = "EMAIL", nullable = false)
     private String email;
 
     @JsonIgnore
-    @Column
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column(name = "PASSWORD")
     private String password;
 
-    @Lob
-    @Embedded
-    private Interest interests;
+    @OneToMany(orphanRemoval = true)
+    private List<Interest> interests;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    private Set<Comment> comments;
 
     public User() {
     }
 
     public User(String login, String name, String surname,
-                String email, String password, Interest interests, Role[] roles, Address... addresses) {
+                String email, String password, Interest interests, Role role, Address address) {
         this.login = login;
         this.name = name;
         this.surname = surname;
-        this.roles.addAll(Arrays.asList(roles));
-        this.addresses.addAll(Arrays.asList(addresses));
+        this.role = role;
+        this.address = address;
         this.email = email;
         this.password = password;
-        this.interests = interests;
     }
 
     public Long getId() {
@@ -98,20 +99,20 @@ public class User {
         this.surname = surname;
     }
 
-    public List<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
-    public List<Address> getAddresses() {
-        return addresses;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setAddresses(List<Address> addresses) {
-        this.addresses = addresses;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public String getEmail() {
@@ -130,12 +131,43 @@ public class User {
         this.password = password;
     }
 
-    public Interest getInterests() {
+    public List<Interest> getInterests() {
         return interests;
     }
 
-    public void setInterests(Interest interests) {
+    public void setInterests(List<Interest> interests) {
         this.interests = interests;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id.equals(user.id) &&
+                login.equals(user.login) &&
+                name.equals(user.name) &&
+                Objects.equals(surname, user.surname) &&
+                role == user.role &&
+                Objects.equals(address, user.address) &&
+                email.equals(user.email) &&
+                password.equals(user.password) &&
+                //Objects.equals(interests, user.interests)
+                //&&
+                Objects.equals(comments, user.comments);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, login, name, surname, role, email);
     }
 
     @Override
@@ -145,11 +177,7 @@ public class User {
                 ", login='" + login + '\'' +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
-                ", roles=" + roles +
-                ", addresses=" + addresses +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", interests=" + interests +
+                ", roles=" + role +
                 '}';
     }
 }

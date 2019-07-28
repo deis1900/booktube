@@ -1,32 +1,23 @@
 package com.booktube.model.subModel;
 
-import com.booktube.model.Book;
-import com.booktube.model.User;
-
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "INTERESTS")
-public class Interest {
+@Table(name = "Video")
+public class Video {
 
     @Id
-    @Column(name = "ID", nullable = false, unique = true)
     private Long id;
 
-    @ManyToOne
-    private User user;
-
-    @OneToMany
-    @JoinColumn(name = "book_ID", updatable = false, insertable = false)
-    private List<Book> books;
+    @Column
+    private String video;
 
     @Temporal(TemporalType.TIMESTAMP)
     private java.util.Date creationDate;
 
-    public Interest() {
+    public Video() {
     }
 
     public Long getId() {
@@ -37,12 +28,12 @@ public class Interest {
         this.id = id;
     }
 
-    public List<Book> getBooks() {
-        return books;
+    public String getVideo() {
+        return video;
     }
 
-    public void setBooks(List<Book> books) {
-        this.books = books;
+    public void setVideo(String video) {
+        this.video = video;
     }
 
     public Date getCreationDate() {
@@ -57,21 +48,23 @@ public class Interest {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Interest interest = (Interest) o;
-        return Objects.equals(id, interest.id) &&
-                Objects.equals(books, interest.books);
+        Video video1 = (Video) o;
+        return Objects.equals(id, video1.id) &&
+                Objects.equals(video, video1.video) &&
+                Objects.equals(creationDate, video1.creationDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, books);
+        return Objects.hash(id, video, creationDate);
     }
 
     @Override
     public String toString() {
-        return "Interest{" +
+        return "Video{" +
                 "id=" + id +
-                ", book=" + books +
+                ", video='" + video + '\'' +
+                ", creationDate=" + creationDate +
                 '}';
     }
 }
